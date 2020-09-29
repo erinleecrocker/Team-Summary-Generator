@@ -1,20 +1,29 @@
 {
-  "name": "Team-Summary-Generator",
+  "name": "unit10hw",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "OOP and testing for week 10 homework",
+  "main": "app.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose test/*"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/erinleecrocker/Team-Summary-Generator.git"
+    "url": "git+https://github.com/stevetrilogy/unit10hw.git"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/erinleecrocker/Team-Summary-Generator/issues"
+    "url": "https://github.com/stevetrilogy/unit10hw/issues"
   },
-  "homepage": "https://github.com/erinleecrocker/Team-Summary-Generator#readme"
+  "homepage": "https://github.com/stevetrilogy/unit10hw#readme",
+  "dependencies": {
+    "inquirer": "^6.3.1"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
+  }
 }
