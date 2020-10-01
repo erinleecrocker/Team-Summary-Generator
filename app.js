@@ -13,45 +13,159 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-inquirer
-  .prompt([
-    /* Pass your questions in here */
-    {
-        type: "input",
-        name: "managerName",
-        message: "what is your name?"
-    },
-    {
-        type: "input",
-        name: "managerEmail",
-        message: "What is your email?"
-    },
-    {
-        type: "input",
-        name: "managerId",
-        message: "What is your Id?"
-    },
-    {
-        type: "input",
-        name: "officeNumber",
-        message: "WHat is your Office Number?"
+var employeeArray = [""];
+
+// gather standard employee data, then ask role specific questions; then push to employeeArray 
+var employeePrompt = function() {
+    inquirer.prompt([
+        {
+          type: "input",
+          name: "name",
+          message: "What the Employee's name?"
+        },
+        {
+          type: "input",
+          name: "id",
+          message: "What is the Employee's id?"
+        },
+        {
+          type: "input",
+          name: "email",
+          message: "What is the Employee's email?"
+        },
+        {
+          type: "list",
+          name: "role",
+          message: "Employee Role?",
+          choices: [ "Manager" , "Engineer" , "Intern" ]
+        }
+    ]).then(function(userResponse) {
+        
+        roleSpecificPrompt(userResponse);
+
+    }).catch(function(err){
+        if (err) throw err
+    })
+}
+// role specific prompts, create objects for each employee that are pushed to the empty array
+var roleSpecificPrompt = function(userResponse) {
+    // console.log(userResponse);
+
+    if (userResponse.role === "Manager"){
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "officeNumber",
+                message: "What is the Manager's Office Number?"
+            }
+        ]).then(function(data){
+        const manager = new Manager(userResponse.name, userResponse.id, userResponse.email, data.officeNumber)
+        console.log(manager);
+        // employeeArray.push(manager);
+        startPrompt();
+        }).catch(function(err){
+            if (err) throw err
+        })
+
+    } else if (userResponse.role === "Engineer"){
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "github",
+                message: "What is your Engineer's GitHub Username?"
+            }
+        ]).then(function(data){
+        const engineer = new Engineer(userResponse.name, userResponse.id, userResponse.email, data.github)
+        console.log(engineer);
+        // employeeArray.push(engineer);
+        startPrompt();
+        }).catch(function(err){
+            if (err) throw err
+        })
+    } else if (userResponse.role === "Intern"){
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "school",
+                message: "What is the name of your Intern's School?"
+            }
+        ]).then(function(data){
+        const intern = new Intern(userResponse.name, userResponse.id, userResponse.email, data.school)
+        console.log(intern);
+        // employeeArray.push(intern);
+        startPrompt();
+        }).catch(function(err){
+            if (err) throw err
+        })
     }
-    ])
-    .then(function(response){
-        console.log(response);
+}
+
+// initial start prompt
+const startPrompt = function(){
+    inquirer.prompt([
+        {
+            type: "confirm",
+            name: "start",
+            message: "Would you like to add an employee?"
+        }
+    ]).then(function(res){
+        console.log(res);
+        if (res.start === true) {
+            // console.log("true")
+            employeePrompt();
+        } else {
+            console.log("false, done");
+        };
         
     })
+}
+            // prompt to stop and write file
+// const stopPrompt = function(){
+//     inquirer.prompt([
+//     {
+//         type: "confirm",
+//         name: "stop",
+//         message: "Would you like to stop adding employees?",
+//     }
+//     ]).then(function(res){
+//         if (res.stop = true){
+//             const currentEmployeeData = render(employeeArray);
+//             fs.writeFile(outPath, currentEmployeeData, function(err){
+//                 if (err) throw err;
+//             })
+//         } else {
+//             addTeamMember();
+//         }
+//     })
+// }
 
-    // prompt([
-    //     {
-    //         type: "input",
-    //         name: "numberOfTeam",
-    //         message: "How many members in your team?"
-    //     }
-    // ]).then(function(response){
-    //     console.log(response);
-    // })
-  
+// const addTeamMember = function(){
+    
+//     inquirer.prompt([
+//         {
+//           type: "list",
+//           name: "role",
+//           message: "Add new Employee. What is your new team member's Position?",
+//           choices: ['Manager', 'Engineer', 'Intern']
+//         }
+//     ]).then(function(res){
+//         if (res = 'Manager'){
+//             console.log("manager");
+//             managerPrompt();
+//         }else if (res = 'Engineer'){
+//             console.log("Engineer");
+//             engineerPrompt();
+//         }else if (res = 'Intern'){
+//             console.log("Intern")
+//            internPrompt();
+//         }
+//     }).catch(function(err){
+//         if (err) throw err
+//     })
+// }
+
+employeePrompt()
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
