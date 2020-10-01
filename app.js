@@ -116,10 +116,13 @@ const startPrompt = function(){
         if (res.start === true) {
             employeePrompt();
         } else {
-            console.log("false, done");
+            // console.log(employeeArray);
             const currentEmployeeData = render(employeeArray);
             fs.writeFileSync(outputPath, utf8, currentEmployeeData, function(err){
-            if (err) throw err;
+                if (err) {
+                    return console.log(err);
+                } else {
+                console.log("sucessfully wrote file")}
             })
         };
         
