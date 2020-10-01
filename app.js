@@ -60,8 +60,8 @@ var roleSpecificPrompt = function(userResponse) {
             }
         ]).then(function(data){
         const manager = new Manager(userResponse.name, userResponse.id, userResponse.email, data.officeNumber)
-        console.log(manager);
-        // employeeArray.push(manager);
+        // console.log(manager);
+        employeeArray.push(manager);
         startPrompt();
         }).catch(function(err){
             if (err) throw err
@@ -76,12 +76,13 @@ var roleSpecificPrompt = function(userResponse) {
             }
         ]).then(function(data){
         const engineer = new Engineer(userResponse.name, userResponse.id, userResponse.email, data.github)
-        console.log(engineer);
-        // employeeArray.push(engineer);
+        // console.log(engineer);
+        employeeArray.push(engineer);
         startPrompt();
         }).catch(function(err){
             if (err) throw err
         })
+
     } else if (userResponse.role === "Intern"){
         inquirer.prompt([
             {
@@ -91,8 +92,8 @@ var roleSpecificPrompt = function(userResponse) {
             }
         ]).then(function(data){
         const intern = new Intern(userResponse.name, userResponse.id, userResponse.email, data.school)
-        console.log(intern);
-        // employeeArray.push(intern);
+        // console.log(intern);
+        employeeArray.push(intern);
         startPrompt();
         }).catch(function(err){
             if (err) throw err
@@ -100,7 +101,7 @@ var roleSpecificPrompt = function(userResponse) {
     }
 }
 
-// initial start prompt
+//  start prompt to see if new employees need to be added
 const startPrompt = function(){
     inquirer.prompt([
         {
@@ -111,60 +112,20 @@ const startPrompt = function(){
     ]).then(function(res){
         console.log(res);
         if (res.start === true) {
-            // console.log("true")
             employeePrompt();
         } else {
             console.log("false, done");
+            const currentEmployeeData = render(employeeArray);
+            fs.writeFile(outputPath, currentEmployeeData, function(err){
+            if (err) throw err;
+            })
         };
         
     })
 }
-            // prompt to stop and write file
-// const stopPrompt = function(){
-//     inquirer.prompt([
-//     {
-//         type: "confirm",
-//         name: "stop",
-//         message: "Would you like to stop adding employees?",
-//     }
-//     ]).then(function(res){
-//         if (res.stop = true){
-//             const currentEmployeeData = render(employeeArray);
-//             fs.writeFile(outPath, currentEmployeeData, function(err){
-//                 if (err) throw err;
-//             })
-//         } else {
-//             addTeamMember();
-//         }
-//     })
-// }
 
-// const addTeamMember = function(){
-    
-//     inquirer.prompt([
-//         {
-//           type: "list",
-//           name: "role",
-//           message: "Add new Employee. What is your new team member's Position?",
-//           choices: ['Manager', 'Engineer', 'Intern']
-//         }
-//     ]).then(function(res){
-//         if (res = 'Manager'){
-//             console.log("manager");
-//             managerPrompt();
-//         }else if (res = 'Engineer'){
-//             console.log("Engineer");
-//             engineerPrompt();
-//         }else if (res = 'Intern'){
-//             console.log("Intern")
-//            internPrompt();
-//         }
-//     }).catch(function(err){
-//         if (err) throw err
-//     })
-// }
 
-employeePrompt()
+employeePrompt();
 
 
 // After the user has input all employees desired, call the `render` function (required
