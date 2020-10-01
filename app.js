@@ -14,7 +14,6 @@ const render = require("./lib/htmlRenderer");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 var employeeArray = [""];
-
 // gather standard employee data, then ask role specific questions; then push to employeeArray 
 var employeePrompt = function() {
     inquirer.prompt([
@@ -59,10 +58,11 @@ var roleSpecificPrompt = function(userResponse) {
                 message: "What is the Manager's Office Number?"
             }
         ]).then(function(data){
-        const manager = new Manager(userResponse.name, userResponse.id, userResponse.email, data.officeNumber)
+        const employee = new Manager(userResponse.name, userResponse.id, userResponse.email, data.officeNumber,)
         // console.log(manager);
-        employeeArray.push(manager);
+        employeeArray.push(employee);
         startPrompt();
+
         }).catch(function(err){
             if (err) throw err
         })
@@ -75,10 +75,11 @@ var roleSpecificPrompt = function(userResponse) {
                 message: "What is your Engineer's GitHub Username?"
             }
         ]).then(function(data){
-        const engineer = new Engineer(userResponse.name, userResponse.id, userResponse.email, data.github)
+        const employee = new Engineer(userResponse.name, userResponse.id, userResponse.email, data.github)
         // console.log(engineer);
-        employeeArray.push(engineer);
+        employeeArray.push(employee);
         startPrompt();
+
         }).catch(function(err){
             if (err) throw err
         })
@@ -91,10 +92,11 @@ var roleSpecificPrompt = function(userResponse) {
                 message: "What is the name of your Intern's School?"
             }
         ]).then(function(data){
-        const intern = new Intern(userResponse.name, userResponse.id, userResponse.email, data.school)
+        const employee = new Intern(userResponse.name, userResponse.id, userResponse.email, data.school)
         // console.log(intern);
-        employeeArray.push(intern);
+        employeeArray.push(employee);
         startPrompt();
+
         }).catch(function(err){
             if (err) throw err
         })
@@ -116,11 +118,13 @@ const startPrompt = function(){
         } else {
             console.log("false, done");
             const currentEmployeeData = render(employeeArray);
-            fs.writeFile(outputPath, currentEmployeeData, function(err){
+            fs.writeFileSync(outputPath, utf8, currentEmployeeData, function(err){
             if (err) throw err;
             })
         };
         
+    }).catch(function(err){
+        if (err) throw err
     })
 }
 
