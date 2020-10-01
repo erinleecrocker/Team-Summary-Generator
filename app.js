@@ -59,7 +59,7 @@ var roleSpecificPrompt = function(userResponse) {
             }
         ]).then(function(data){
         const employee = new Manager(userResponse.name, userResponse.id, userResponse.email, data.officeNumber,)
-        // console.log(manager);
+        console.log(employee);
         employeeArray.push(employee);
         startPrompt();
 
@@ -76,7 +76,7 @@ var roleSpecificPrompt = function(userResponse) {
             }
         ]).then(function(data){
         const employee = new Engineer(userResponse.name, userResponse.id, userResponse.email, data.github)
-        // console.log(engineer);
+        //console.log(engineer);
         employeeArray.push(employee);
         startPrompt();
 
@@ -117,14 +117,16 @@ const startPrompt = function(){
             employeePrompt();
         } else {
             // console.log(employeeArray);
-            const currentEmployeeData = render(employeeArray);
-            fs.writeFileSync(outputPath, utf8, currentEmployeeData, function(err){
-                if (err) {
-                    return console.log(err);
-                } else {
-                console.log("sucessfully wrote file")}
-            })
-        };
+        //     const employees = render(employeeArray);
+        //     console.log(employees);
+
+        //     fs.writeFile(outputPath, employees, function(err){
+        //         if (err) {
+        //             return console.log(err);
+        //         } else {
+        //         console.log("sucessfully wrote file")}
+        //     })
+        // };
         
     }).catch(function(err){
         if (err) throw err
